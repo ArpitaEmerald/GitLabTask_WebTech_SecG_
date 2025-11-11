@@ -1,0 +1,32 @@
+<informations>
+    <information>
+        <serial>23</serial> 
+        <name>John Carter</name>
+        <date>
+        <day>25</day>
+        <month>12</month>
+        <year>2015</year>
+        </date>
+    </information>
+
+    <information>
+        <serial>29</serial> 
+        <name>Bob Marshal</name>
+        <date>
+        <day>13</day>
+        <month>01</month>
+        <year>1999</year>
+         </date>
+    </information>
+<information>
+        <serial>35</serial> 
+        <name>Clark Kent</name>
+        <date>
+        <day>17</day>
+        <month>06</month>
+        <year>2005</year>
+        
+        </date>
+    </information>
+    
+</informations>
