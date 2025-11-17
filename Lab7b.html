@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Email Validation</title>
+  <style>
+   
+    body { font-family: Arial, sans-serif; padding: 20px; }
+
+   
+    .info {
+      display: inline-block;
+      position: relative;
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+      text-align: center;
+      border-radius: 3px;
+      background: #1e73be; 
+      color: white;
+      font-weight: bold;
+      font-size: 12px;
+      cursor: default;
+      margin-left: 8px;
+      vertical-align: middle;
+      border: 1px solid #0e4f7a;
+    }
+
+    
+    .info .tooltip {
+      display: none;               
+      position: absolute;
+      left: 26px;                  
+      top: -6px;
+      padding: 6px 10px;
+      border: 1px solid #999;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+      white-space: nowrap;
+      font-size: 13px;
+      color: #222;
+      z-index: 10;
+    }
+
+    
+    .info:hover .tooltip,
+    .info:focus .tooltip {
+      display: block;
+    }
+
+    
+    .info .tooltip::before {
+      content: "";
+      position: absolute;
+      left: -6px;
+      top: 10px;
+      border-width: 6px;
+      border-style: solid;
+      border-color: transparent #999 transparent transparent;
+    }
+    .info .tooltip::after {
+      content: "";
+      position: absolute;
+      left: -5px;
+      top: 11px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent #fff transparent transparent;
+    }
+
+    
+    #msg { margin-top: 10px; color: red; }
+  </style>
+</head>
+<body>
+
+  <h3>Email</h3>
+
+  <input type="text" id="email" aria-describedby="emailHint">
+  <button onclick="checkEmail()">Submit</button>
+
+  
+  <span class="info" tabindex="0" role="img" aria-label="Information">
+    i
+    <span class="tooltip" id="emailHint">hint: sample@example.com</span>
+  </span>
+
+  <p id="msg"></p>
+
+  <script>
+    function checkEmail() {
+      var email = document.getElementById("email").value;
+      var msg = document.getElementById("msg");
+
+      
+      msg.style.color = "red";
+
+      
+      if (email == "") {
+        msg.innerHTML = "Email cannot be empty";
+        return;
+      }
+
+      
+      var atPos = email.indexOf("@");
+      var dotPos = email.lastIndexOf(".");
+
+      if (atPos < 1) {
+        msg.innerHTML = "Invalid email";
+        return;
+      }
+
+      if (dotPos < atPos + 2) {
+        msg.innerHTML = "Invalid email";
+        return;
+      }
+
+      if (dotPos == email.length - 1) {
+        msg.innerHTML = "Invalid email";
+        return;
+      }
+
+      
+      msg.style.color = "green";
+      msg.innerHTML = "Valid Email!";
+    }
+  </script>
+
+</body>
+</html>
