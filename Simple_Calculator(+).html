@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <b><h1><p> Simple Calcultor</p></h1></b> 
+    <title>Addition</title>
+</head>
+<body>
+
+<input type="text" id="num1" placeholder="Enter first number"><br><br>
+<input type="text" id="num2" placeholder="Enter second number"><br><br>
+
+<button id="addBtn">+</button>
+<button id="clearBtn">Clear</button>
+
+<button id="resultBtn">Result</button>
+
+<script>
+    let addButton = document.getElementById("addBtn");
+    let clearButton = document.getElementById("clearBtn");
+    let resultButton = document.getElementById("resultBtn");
+
+    addButton.addEventListener("click", function() {
+        let a = Number(document.getElementById("num1").value);
+        let b = Number(document.getElementById("num2").value);
+
+        let sum = a + b;
+
+        resultButton.innerText = sum;   
+    });
+
+    clearButton.addEventListener("click", function() {
+        document.getElementById("num1").value = "";
+        document.getElementById("num2").value = "";
+        resultButton.innerText = "Result";
+    });
+</script>
+
+</body>
+</html>
