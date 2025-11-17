@@ -1,7 +1,42 @@
-<html lang="en">
-    <head>
-        <title>
-            
-        </title>
-    </head>
-</html>
+<script>
+function checkName() {
+    var n = document.getElementById("name").value;
+    var m = document.getElementById("msg");
+
+    if (n == "") {
+        m.innerHTML = "Name cannot be empty";
+        return;
+    }
+
+    var words = n.trim().split(" ");
+    if (words.length < 2) {
+        m.innerHTML = "Must contain at least two words";
+        return;
+    }
+
+   
+    var first = n.trim().charAt(0);
+    if (!((first >= 'A' && first <= 'Z') || (first >= 'a' && first <= 'z'))) {
+        m.innerHTML = "Must start with a letter";
+        return;
+    }
+
+    
+    for (var i = 0; i < n.length; i++) {
+        var c = n.charAt(i);
+
+        var isLetter = (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+        var isDot = (c == '.');
+        var isDash = (c == '-');
+        var isSpace = (c == ' ');
+
+        if (!(isLetter || isDot || isDash || isSpace)) {
+            m.innerHTML = "Invalid characters found";
+            return;
+        }
+    }
+
+    m.style.color = "green";
+    m.innerHTML = "Valid Name!";
+}
+</script>
