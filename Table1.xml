@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <products>
     <product>
         <id>11</id> 
@@ -38,6 +38,8 @@
 
 
 =======
+=======
+>>>>>>> 9f55f27a5135ea6656c9ab4c43144297b3d927cf
 <products>
     <product>
         <id>11</id> 
@@ -76,4 +78,7 @@
 
 
 
+<<<<<<< HEAD
 >>>>>>> 2fc66f0 (first commit)
+=======
+>>>>>>> 9f55f27a5135ea6656c9ab4c43144297b3d927cf
