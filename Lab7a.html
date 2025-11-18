@@ -14,14 +14,14 @@ function checkName() {
         return;
     }
 
-    // Must start with a letter
+    
     var first = n.trim().charAt(0);
     if (!((first >= 'A' && first <= 'Z') || (first >= 'a' && first <= 'z'))) {
         m.innerHTML = "Must start with a letter";
         return;
     }
 
-    // Check every character manually
+    
     for (var i = 0; i < n.length; i++) {
         var c = n.charAt(i);
 
