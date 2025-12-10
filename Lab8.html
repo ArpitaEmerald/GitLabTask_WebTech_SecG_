@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dynamic Form</title>
+</head>
+<body>
+<h2>Dynamic Form Page</h2>
+
+<label>Username:</label>
+<input id="username"><br><br>
+
+<label>Select Field Type:</label>
+<select id="fieldType">
+    <option value="text">Text</option>
+    <option value="number">Number</option>
+    <option value="email">Email</option>
+    <option value="date">Date of Birth</option>
+</select>
+
+<button id="addBtn">Add</button>
+<button id="saveBtn">Save</button>
+<hr>
+<div id="formArea"></div>
+<hr>
+
+<div id="result"></div>
+
+<script>
+    let count=0
+ document.getElementById("addBtn").addEventListener("click",function(){
+    count++
+ 
+ let type = document.getElementById("fieldType").value;
+
+ 
+</script>
+
+</body>
+</html>

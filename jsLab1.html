@@ -1,0 +1,95 @@
+</head>
+<body>
+
+    <form id="signupForm">
+        <h2>Student Signup</h2>
+
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" name="fullname" required>
+        <div id="fullnameError" class="error"></div>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        <div id="emailError" class="error"></div>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        <div id="passwordError" class="error"></div>
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+        <div id="confirmPasswordError" class="error"></div>
+
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone" required>
+        <div id="phoneError" class="error"></div>
+
+        <button type="submit">Register</button>
+        <div id="successMessage" class="success"></div>
+    </form>
+
+    <script>
+        const form = document.getElementById('signupForm');
+
+        form.addEventListener('submit', function(event) {
+            
+        }
+            event.preventDefault(); // Prevent form submission
+
+            // Clear previous messages
+            document.getElementById('fullnameError').innerText = '';
+            document.getElementById('emailError').innerText = '';
+            document.getElementById('passwordError').innerText = '';
+            document.getElementById('confirmPasswordError').innerText = '';
+            document.getElementById('phoneError').innerText = '';
+            document.getElementById('successMessage').innerText = '';
+
+            // Get form values
+            const fullname = document.getElementById('fullname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const phone = document.getElementById('phone').value.trim();
+
+            let isValid = true;
+
+            // Full Name validation
+            if (fullname === '') {
+                document.getElementById('fullnameError').innerText = 'Full Name is required.';
+                isValid = false;
+            }
+
+            // Email validation
+            if (!email.includes('@') || !email.includes('.')) {
+                document.getElementById('emailError').innerText = 'Enter a valid email address.';
+                isValid = false;
+            }
+
+            // Password validation
+            if (password.length < 6) {
+                document.getElementById('passwordError').innerText = 'Password must be at least 6 characters.';
+                isValid = false;
+            }
+
+            // Confirm Password validation
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').innerText = 'Passwords do not match.';
+                isValid = false;
+            }
+
+            // Phone number validation (only digits)
+            if (!/^\d+$/.test(phone)) {
+                document.getElementById('phoneError').innerText = 'Phone number must contain only digits.';
+                isValid = false;
+            }
+
+            // If all validations pass
+            if (isValid) {
+                document.getElementById('successMessage').innerText = 'Registration Successful!';
+                form.reset();
+            }
+        });
+    </script>
+
+</body>
+</html>
