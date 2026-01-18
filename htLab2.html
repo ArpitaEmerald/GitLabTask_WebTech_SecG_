@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Admission Form</title>
+</head>
+
+<body>
+
+    <h1>University Admission Form</h1>
+
+    <form action="#" method="post" enctype="multipart/form-data">
+
+        <!-- Personal Information -->
+        <fieldset>
+            <legend>Personal Information</legend>
+
+            <label for="fname">Full Name:</label><br>
+            <input type="text" id="fname" name="fullname" maxlength="50" required><br><br>
+
+            <label for="email">Email Address:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="dob">Date of Birth:</label><br>
+            <input type="date" id="dob" name="dob" required><br><br>
+
+            <label>Gender:</label><br>
+            <input type="radio" id="male" name="gender" value="Male" required>
+            <label for="male">Male</label>
+
+            <input type="radio" id="female" name="gender" value="Female">
+            <label for="female">Female</label>
+
+            <input type="radio" id="other" name="gender" value="Other">
+            <label for="other">Other</label><br><br>
+        </fieldset>
+
+        <br>
+
+        <!-- Academic Information -->
+        <fieldset>
+            <legend>Academic Information</legend>
+
+            <label for="ssc">SSC Result (GPA):</label><br>
+            <input type="text" id="ssc" name="ssc_gpa" maxlength="5" required><br><br>
+
+            <label for="hsc">HSC Result (GPA):</label><br>
+            <input type="text" id="hsc" name="hsc_gpa" maxlength="5" required><br><br>
+
+            <label for="department">Preferred Department:</label><br>
+            <select id="department" name="department" required>
+                <option value="">-- Select Department --</option>3
+                <option value="cse">Computer Science & Engineering (CSE)</option>
+                <option value="eee">Electrical & Electronic Engineering (EEE)</option>
+                <option value="bba">Business Administration (BBA)</option>
+                <option value="eng">English</option>
+            </select><br><br>
+
+            <label>Interests (You may choose multiple):</label><br>
+            <input type="checkbox" id="sports" name="interests" value="Sports">
+            <label for="sports">Sports</label><br>
+
+            <input type="checkbox" id="coding" name="interests" value="Coding">
+            <label for="coding">Coding</label><br>
+
+            <input type="checkbox" id="arts" name="interests" value="Arts">
+            <label for="arts">Arts</label><br><br>
+        </fieldset>
+
+        <br>
+
+        <!-- Documents Upload -->
+        <fieldset>
+            <legend>Documents</legend>
+
+            <label for="photo">Upload Photo:</label><br>
+            <input type="file" id="photo" name="photo" accept="image/*" required><br><br>
+
+            <label for="transcript">Upload Transcript:</label><br>
+            <input type="file" id="transcript" name="transcript" accept=".pdf,.jpg,.png" required><br><br>
+        </fieldset>
+
+        <br>
+
+        <!-- Buttons -->
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+
+    </form>
+
+</body>
+
+</html>
