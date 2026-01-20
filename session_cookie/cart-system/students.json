@@ -1,0 +1,59 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+      "courses": [
+        { "code": "CSC101", "name": "Programming", "grade": 85, "credits": 3 },
+        { "code": "MAT201", "name": "Calculus", "grade": 78, "credits": 4 }
+      ],
+      "gpa": 3.5,
+      "semester": "Fall 2024"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "courses": [
+        { "code": "ENG101", "name": "English", "grade": 88, "credits": 3 },
+        { "code": "PHY101", "name": "Physics", "grade": 92, "credits": 4 }
+      ],
+      "gpa": 3.8,
+      "semester": "Fall 2024"
+    },
+    {
+      "id": 3,
+      "name": "Michael Brown",
+      "email": "michael@example.com",
+      "courses": [
+        { "code": "CSC202", "name": "Data Structures", "grade": 75, "credits": 3 },
+        { "code": "MAT301", "name": "Statistics", "grade": 70, "credits": 3 }
+      ],
+      "gpa": 3.0,
+      "semester": "Spring 2024"
+    },
+    {
+      "id": 4,
+      "name": "Emily Davis",
+      "email": "emily@example.com",
+      "courses": [
+        { "code": "BIO101", "name": "Biology", "grade": 90, "credits": 4 },
+        { "code": "CHE101", "name": "Chemistry", "grade": 86, "credits": 4 }
+      ],
+      "gpa": 3.7,
+      "semester": "Spring 2024"
+    },
+    {
+      "id": 5,
+      "name": "Arif Rahman",
+      "email": "arif@example.com",
+      "courses": [
+        { "code": "ECO101", "name": "Economics", "grade": 82, "credits": 3 },
+        { "code": "BUS201", "name": "Management", "grade": 79, "credits": 3 }
+      ],
+      "gpa": 3.3,
+      "semester": "Fall 2024"
+    }
+  ]
+}

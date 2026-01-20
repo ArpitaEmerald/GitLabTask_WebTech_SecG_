@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    input, select {
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    .stats {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .students {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+      border-left: 6px solid transparent;
+    }
+
+    .card.highlight {
+      border-left-color: green;
+    }
+
+    .details {
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Student Dashboard</h1>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="Search by name">
+  <select id="semesterFilter">
+    <option value="">All Semesters</option>
+    <option value="Fall 2024">Fall 2024</option>
+    <option value="Spring 2024">Spring 2024</option>
+  </select>
+  <select id="sort">
+    <option value="name">Sort by Name</option>
+    <option value="gpa">Sort by GPA (High → Low)</option>
+  </select>
+</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="students" id="studentList"></div>
+
+<div class="details" id="details"></div>
+
+<script>
+fetch('students.json')
+  .then(res => res.json())
+  .then(data => {
+    let students = data.students;
+    const list = document.getElementById('studentList');
+    const details = document.getElementById('details');
+
+    function renderStats() {
+      const gpas = students.map(s => s.gpa);
+      const avg = (gpas.reduce((a,b) => a+b,0)/gpas.length).toFixed(2);
+      document.getElementById('stats').innerText =
+        `Average GPA: ${avg} | Highest GPA: ${Math.max(...gpas)} | Lowest GPA: ${Math.min(...gpas)}`;
+    }
+
+    function render(listData) {
+      list.innerHTML = '';
+      listData.forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'card' + (s.gpa > 3.5 ? ' highlight' : '');
+        card.innerHTML = `
+          <h3>${s.name}</h3>
+          <p>${s.email}</p>
+          <p>GPA: ${s.gpa}</p>
+          <p>Semester: ${s.semester}</p>
+          <p>Courses: ${s.courses.length}</p>
+        `;
+        card.onclick = () => showDetails(s);
+        list.appendChild(card);
+      });
+    }
+
+    function showDetails(s) {
+      let totalCredits = 0;
+      let gradeCount = {A:0, B:0, C:0};
+
+      s.courses.forEach(c => {
+        totalCredits += c.credits;
+        if (c.grade >= 80) gradeCount.A++;
+        else if (c.grade >= 70) gradeCount.B++;
+        else gradeCount.C++;
+      });
+
+      details.style.display = 'block';
+      details.innerHTML = `
+        <h2>${s.name} – Course Details</h2>
+        <table>
+          <tr><th>Code</th><th>Name</th><th>Grade</th><th>Credits</th></tr>
+          ${s.courses.map(c =>
+            `<tr><td>${c.code}</td><td>${c.name}</td><td>${c.grade}</td><td>${c.credits}</td></tr>`
+          ).join('')}
+        </table>
+        <p><b>Total Credits:</b> ${totalCredits}</p>
+        <p><b>Grade Distribution:</b> A: ${gradeCount.A}, B: ${gradeCount.B}, C: ${gradeCount.C}</p>
+        <p><b>GPA (Verified):</b> ${s.gpa}</p>
+      `;
+    }
+
+    document.getElementById('search').oninput = e => {
+      render(students.filter(s => s.name.toLowerCase().includes(e.target.value.toLowerCase())));
+    };
+
+    document.getElementById('semesterFilter').onchange = e => {
+      render(e.target.value ? students.filter(s => s.semester === e.target.value) : students);
+    };
+
+    document.getElementById('sort').onchange = e => {
+      const sorted = [...students];
+      if (e.target.value === 'name') sorted.sort((a,b) => a.name.localeCompare(b.name));
+      else sorted.sort((a,b) => b.gpa - a.gpa);
+      render(sorted);
+    };
+
+    renderStats();
+    render(students);
+  });
+</script>
+
+</body>
+</html>

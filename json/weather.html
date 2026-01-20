@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>7-Day Weather Forecast</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #74ebd5, #9face6);
+  margin: 0;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+select, button {
+  padding: 8px;
+  font-size: 14px;
+}
+
+#time {
+  text-align: center;
+  margin: 10px 0;
+}
+
+#forecast {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  animation: fadeIn 0.6s ease-in;
+}
+
+.rain {
+  border: 3px solid #2196f3;
+}
+
+.snow {
+  border: 3px solid #90caf9;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stats {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🌦️ Weather Forecast</h1>
+</header>
+
+<div class="controls">
+  <select id="city">
+    <option>New York</option>
+    <option>London</option>
+    <option>Tokyo</option>
+  </select>
+
+  <button onclick="toggleUnit()">°C / °F</button>
+  <button onclick="loadWeather()">Refresh</button>
+</div>
+
+<div id="time"></div>
+<div id="forecast"></div>
+<div class="stats" id="stats"></div>
+
+<script>
+let unit = "F";
+
+function updateTime() {
+  document.getElementById("time").innerText =
+    "Current Time: " + new Date().toLocaleString();
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+function convert(temp) {
+  return unit === "C" ? ((temp - 32) * 5/9).toFixed(1) : temp;
+}
+
+function toggleUnit() {
+  unit = unit === "F" ? "C" : "F";
+  loadWeather();
+}
+
+function loadWeather() {
+  const city = document.getElementById("city").value;
+  const forecast = document.getElementById("forecast");
+  const stats = document.getElementById("stats");
+
+  forecast.innerHTML = "<div class='loading'>Loading...</div>";
+  stats.innerHTML = "";
+
+  fetch(`weather.php?city=${city}`)
+    .then(res => res.text())
+    .then(text => {
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        forecast.innerHTML = "Error parsing weather data";
+        return;
+      }
+
+      forecast.innerHTML = "";
+      let highs = [];
+
+      data.forecast.forEach(day => {
+        highs.push(day.temp_high);
+        const date = new Date(day.date);
+        const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+
+        const card = document.createElement("div");
+        card.className = "card " +
+          (day.condition === "Rain" ? "rain" :
+           day.condition === "Snow" ? "snow" : "");
+
+        card.innerHTML = `
+          <h3>${dayName}</h3>
+          <div style="font-size:30px">${day.icon}</div>
+          <p>${day.condition}</p>
+          <p>High: ${convert(day.temp_high)}°${unit}</p>
+          <p>Low: ${convert(day.temp_low)}°${unit}</p>
+          <p>💧 ${day.humidity}% | 🌬️ ${day.wind_speed} km/h</p>
+        `;
+        forecast.appendChild(card);
+      });
+
+      stats.innerHTML = `
+        Avg Temp: ${(highs.reduce((a,b)=>a+b,0)/highs.length).toFixed(1)}°F |
+        Hottest: ${Math.max(...highs)}°F |
+        Coldest: ${Math.min(...highs)}°F
+      `;
+    })
+    .catch(() => {
+      forecast.innerHTML = "Network error!";
+    });
+}
+
+loadWeather();
+</script>
+
+</body>
+</html>
