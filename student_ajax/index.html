@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Listing (AJAX)</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+  padding: 20px;
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #e9ecef;
+}
+
+#error {
+  color: red;
+  margin-top: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Dynamic Student List</h2>
+
+<button onclick="loadStudents()">Load Student Data</button>
+
+<div id="error"></div>
+
+<table id="studentTable">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Department</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+function loadStudents() {
+  const tableBody = document.querySelector("#studentTable tbody");
+  const errorDiv = document.getElementById("error");
+
+  tableBody.innerHTML = "";
+  errorDiv.innerHTML = "";
+
+  fetch("get_students.php")
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("AJAX request failed");
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.error) {
+        errorDiv.innerText = data.error;
+        return;
+      }
+
+      if (data.length === 0) {
+        errorDiv.innerText = "No students to display.";
+        return;
+      }
+
+      data.forEach(student => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${student.id}</td>
+          <td>${student.name}</td>
+          <td>${student.email}</td>
+          <td>${student.department}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    })
+    .catch(error => {
+      errorDiv.innerText = "Error fetching student data.";
+    });
+}
+</script>
+
+</body>
+</html>
