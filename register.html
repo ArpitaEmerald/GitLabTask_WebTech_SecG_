@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Register</h2>
+
+    <form id="registerForm">
+        <label>Username</label>
+        <input type="text" id="username" autocomplete="off">
+        <div class="info">
+            <span id="charCount">0</span>/3 minimum characters
+            <span id="loading">Checking...</span>
+        </div>
+        <p id="status"></p>
+
+        <label>Email</label>
+        <input type="email" required>
+
+        <label>Password</label>
+        <input type="password" required>
+
+        <button type="submit" id="submitBtn" disabled>Register</button>
+    </form>
+</div>
+
+<script>
+let timer = null;
+const usernameInput = document.getElementById("username");
+const statusText = document.getElementById("status");
+const submitBtn = document.getElementById("submitBtn");
+const loading = document.getElementById("loading");
+const charCount = document.getElementById("charCount");
+
+usernameInput.addEventListener("keyup", function () {
+    const username = usernameInput.value.trim();
+    charCount.textContent = username.length;
+
+    clearTimeout(timer);
+
+    if (username.length < 3) {
+        statusText.textContent = "Minimum 3 characters required";
+        statusText.className = "error";
+        submitBtn.disabled = true;
+        loading.style.display = "none";
+        return;
+    }
+
+    loading.style.display = "inline";
+
+    timer = setTimeout(() => {
+        checkUsername(username);
+    }, 300);
+});
+
+function checkUsername(username) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "check_username.php?username=" + encodeURIComponent(username), true);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            loading.style.display = "none";
+
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+
+                statusText.textContent = response.message;
+                statusText.className = response.available ? "success" : "error";
+                submitBtn.disabled = !response.available;
+            } else {
+                statusText.textContent = "Server error!";
+                statusText.className = "error";
+                submitBtn.disabled = true;
+            }
+        }
+    };
+
+    xhr.send();
+}
+</script>
+
+</body>
+</html>
