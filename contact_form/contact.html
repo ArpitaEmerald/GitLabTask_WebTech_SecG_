@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Contact Form</h2>
+
+    <form id="contactForm">
+
+        <label>Name</label>
+        <input type="text" id="name">
+        <span class="icon" id="nameIcon"></span>
+        <small id="nameError"></small>
+
+        <label>Email</label>
+        <input type="email" id="email">
+        <span class="icon" id="emailIcon"></span>
+        <small id="emailError"></small>
+
+        <label>Phone</label>
+        <input type="text" id="phone" placeholder="123-456-7890">
+        <span class="icon" id="phoneIcon"></span>
+        <small id="phoneError"></small>
+
+        <label>Subject</label>
+        <select id="subject">
+            <option value="">Select Subject</option>
+            <option>Support</option>
+            <option>Sales</option>
+            <option>Feedback</option>
+        </select>
+        <small id="subjectError"></small>
+
+        <label>Message</label>
+        <textarea id="message"></textarea>
+        <small id="messageError"></small>
+
+        <button type="submit" id="submitBtn" disabled>Submit</button>
+        <div id="spinner">Submitting...</div>
+    </form>
+
+    <div id="successMsg"></div>
+</div>
+
+<script>
+const form = document.getElementById("contactForm");
+const submitBtn = document.getElementById("submitBtn");
+const spinner = document.getElementById("spinner");
+const successMsg = document.getElementById("successMsg");
+
+let valid = {
+    name:false, email:false, phone:false, subject:false, message:false
+};
+
+/* ---------- VALIDATION FUNCTIONS ---------- */
+
+document.getElementById("name").addEventListener("input", () => {
+    const val = name.value.trim();
+    if (/^[A-Za-z ]{3,}$/.test(val)) {
+        valid.name = true;
+        show("name", "✔", "");
+    } else {
+        valid.name = false;
+        show("name", "✖", "Min 3 letters only");
+    }
+    toggleSubmit();
+});
+
+email.addEventListener("blur", () => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "validate_email.php?email=" + email.value, true);
+    xhr.timeout = 5000;
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            const res = JSON.parse(xhr.responseText);
+            valid.email = res.valid;
+            show("email", res.valid ? "✔" : "✖", res.message);
+            toggleSubmit();
+        }
+    };
+    xhr.send();
+});
+
+phone.addEventListener("input", () => {
+    valid.phone = /^\d{3}-\d{3}-\d{4}$/.test(phone.value);
+    show("phone", valid.phone ? "✔" : "✖", "Format xxx-xxx-xxxx");
+    toggleSubmit();
+});
+
+subject.addEventListener("change", () => {
+    valid.subject = subject.value !== "";
+    subjectError.textContent = valid.subject ? "" : "Select subject";
+    toggleSubmit();
+});
+
+message.addEventListener("input", () => {
+    valid.message = message.value.length >= 20;
+    messageError.textContent = valid.message ? "" : "Min 20 characters";
+    toggleSubmit();
+});
+
+function toggleSubmit() {
+    submitBtn.disabled = !Object.values(valid).every(v => v);
+}
+
+function show(field, icon, msg) {
+    document.getElementById(field+"Icon").textContent = icon;
+    document.getElementById(field+"Error").textContent = msg;
+}
+
+/* ---------- FORM SUBMIT ---------- */
+
+form.addEventListener("submit", e => {
+    e.preventDefault();
+    spinner.style.display = "block";
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "submit_form.php", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.timeout = 5000;
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+            spinner.style.display = "none";
+            const res = JSON.parse(xhr.responseText);
+            successMsg.textContent = res.message;
+            if (res.success) form.reset();
+        }
+    };
+
+    xhr.send(JSON.stringify({
+        name:name.value,
+        email:email.value,
+        phone:phone.value,
+        subject:subject.value,
+        message:message.value
+    }));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Travel Agency Banner Slider</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #004080;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 700px;
+            height: 400px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            background-color: #fff;
+        }
+
+        .slider-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .slider-buttons {
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            background-color: #004080;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #003366;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Explore Beautiful Destinations</h1>
+
+    <div class="slider-container">
+        <img id="bannerImage" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Travel Destination">
+    </div>
+
+    <div class="slider-buttons">
+        <button id="prevBtn">Previous</button>
+        <button id="nextBtn">Next</button>
+    </div>
+
+    <script>
+        // Array of image URLs
+        const images = [
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e", // Beach
+            "https://images.unsplash.com/photo-1501785888041-af3ef285b470", // Mountains
+            "https://images.unsplash.com/photo-1491553895911-0055eca6402d", // City skyline
+            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308", // Forest
+            "https://images.unsplash.com/photo-1470770841072-f978cf4d019e"  // Desert
+        ];
+
+        let currentIndex = 0; // Track current image
+        const bannerImage = document.getElementById("bannerImage");
+
+        // Function to update image
+        function showImage(index) {
+            bannerImage.src = images[index];
+        }
+
+        // Previous button click
+        document.getElementById("prevBtn").addEventListener("click", () => {
+            currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = images.length - 1; // loop to last image
+            }
+            showImage(currentIndex);
+        });
+
+        // Next button click
+        document.getElementById("nextBtn").addEventListener("click", () => {
+            currentIndex++;
+            if (currentIndex >= images.length) {
+                currentIndex = 0; // loop to first image
+            }
+            showImage(currentIndex);
+        });
+
+        // Automatic slideshow every 3 seconds
+        setInterval(() => {
+            currentIndex++;
+            if (currentIndex >= images.length) {
+                currentIndex = 0;
+            }
+            showImage(currentIndex);
+        }, 3000);
+    </script>
+
+</body>
+</html>
